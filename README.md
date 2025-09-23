@@ -45,7 +45,6 @@ Si deseas convertir el archivo `.bat` en un `.exe`, puedes usar una herramienta 
 1.  **Busca y descarga** un convertidor de "Bat a Exe".
 2.  **Carga el archivo** `WinOptimize.bat` en la herramienta.
 3.  **Configura y compila** el `.exe` a tu gusto.
-
 **Nota de seguridad**: Compilar el archivo tú mismo te da la certeza de que el `.exe` es seguro y se basa en el código que has revisado.
 
 ## Cómo Clonar el Repositorio
