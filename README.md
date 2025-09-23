@@ -19,7 +19,10 @@ Este repositorio también incluye una página web estática lista para ser publi
 
 El uso del script es muy sencillo:
 
-1.  **Descargar el Script**: Descarga el archivo `WinOptimize.bat` desde el botón en la [página del proyecto](https://TU_USUARIO.github.io/TU_REPOSITORIO/) (una vez publicada) o directamente desde este repositorio.
+1.  **Descargar el Script**:
+    -   Descarga el archivo `WinOptimize.bat` desde el botón en la [página del proyecto](https://TU_USUARIO.github.io/TU_REPOSITORIO/).
+    -   **Importante**: Para que el enlace de la página funcione, primero debes subir este proyecto a tu propio repositorio de GitHub y reemplazar `TU_USUARIO` y `TU_REPOSITORIO` en el archivo `docs/index.html`.
+
 2.  **Ejecutar como Administrador**:
     -   Haz clic derecho sobre el archivo `WinOptimize.bat` que descargaste.
     -   Selecciona la opción **"Ejecutar como administrador"**.
@@ -37,13 +40,11 @@ La página web de este proyecto está en la carpeta `/docs` y está lista para s
 
 ## Creación de un Archivo Ejecutable (.exe) (Opcional)
 
-Si deseas convertir el archivo `.bat` en un `.exe` para que tenga un icono personalizado o para distribuirlo más fácilmente, puedes usar una herramienta de terceros.
+Si deseas convertir el archivo `.bat` en un `.exe`, puedes usar una herramienta de terceros como "Bat To Exe Converter".
 
-1.  **Busca una herramienta**: Busca en internet "Bat To Exe Converter". Hay varias opciones gratuitas disponibles.
-2.  **Carga el script**: Abre el convertidor y carga el archivo `WinOptimize.bat`.
-3.  **Configura las opciones**: La mayoría de estas herramientas te permiten incluir un icono personalizado, añadir información de versión y empaquetar archivos adicionales si fuera necesario.
-4.  **Compila el `.exe`**: Haz clic en el botón para compilar y obtendrás un archivo `.exe` independiente.
-
+1.  **Busca y descarga** un convertidor de "Bat a Exe".
+2.  **Carga el archivo** `WinOptimize.bat` en la herramienta.
+3.  **Configura y compila** el `.exe` a tu gusto.
 **Nota de seguridad**: Compilar el archivo tú mismo te da la certeza de que el `.exe` es seguro y se basa en el código que has revisado.
 
 ## Cómo Clonar el Repositorio
