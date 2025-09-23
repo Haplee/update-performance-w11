@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
+
 /* --- Keyframes para Animaciones --- */
 @keyframes fadeIn {
     from {
@@ -42,6 +43,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     /* Animación de entrada */
     animation: fadeIn 0.8s ease-in-out;
+
 }
 
 header {
@@ -151,8 +153,10 @@ footer {
     color: #888;
 }
 
+
 .note {
     font-size: 0.9em;
     color: #888;
     margin-top: 15px;
 }
+
