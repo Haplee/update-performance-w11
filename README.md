@@ -20,8 +20,8 @@ Este repositorio también incluye una página web estática lista para ser publi
 El uso del script es muy sencillo:
 
 1.  **Descargar el Script**:
-    -   Descarga el archivo `WinOptimize.bat` desde el botón en la [página del proyecto](https://TU_USUARIO.github.io/TU_REPOSITORIO/).
-    -   **Importante**: Para que el enlace de la página funcione, primero debes subir este proyecto a tu propio repositorio de GitHub y reemplazar `TU_USUARIO` y `TU_REPOSITORIO` en el archivo `docs/index.html`.
+    -   Descarga el archivo `WinOptimize.bat` desde el botón en la [página del proyecto](https://Haplee.github.io/update-performance-w11/).
+    -   **Importante**: El enlace del botón de descarga en la página ya está configurado para este repositorio.
 
 2.  **Ejecutar como Administrador**:
     -   Haz clic derecho sobre el archivo `WinOptimize.bat` que descargaste.
@@ -36,7 +36,8 @@ La página web de este proyecto está en la carpeta `/docs` y está lista para s
 1.  **Sube el contenido a tu repositorio** de GitHub.
 2.  Ve a **Settings > Pages** en tu repositorio.
 3.  En la sección "Build and deployment", selecciona la rama `main` (o `master`) y la carpeta `/docs` como fuente.
-4.  Guarda los cambios. Tu página estará disponible en `https://tu-usuario.github.io/tu-repositorio/`.
+4.  Guarda los cambios. Tu página estará disponible en `https://Haplee.github.io/update-performance-w11/`.
+
 
 ## Creación de un Archivo Ejecutable (.exe) (Opcional)
 
@@ -52,7 +53,6 @@ Si deseas convertir el archivo `.bat` en un `.exe`, puedes usar una herramienta 
 Para obtener una copia local de este proyecto, usa el siguiente comando:
 
 ```bash
-git clone https://github.com/tu-usuario/tu-repositorio.git
+git clone https://github.com/Haplee/update-performance-w11.git
 ```
 
-No olvides reemplazar `tu-usuario` y `tu-repositorio` con tus datos.
