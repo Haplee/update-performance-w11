@@ -1,58 +1,92 @@
-# WinOptimize Script (.bat)
+# update-performance-w11: Optimizador de Rendimiento Seguro para Windows 11
 
-## Descripción
+[![Estado del Build](https://img.shields.io/badge/build-passing-green.svg)](https://github.com/Haplee/update-performance-w11)
+[![Licencia](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Haplee/update-performance-w11/blob/main/LICENSE)
+[![PowerShell](https://img.shields.io/badge/PowerShell-5.1%2B-blue.svg)](https://docs.microsoft.com/en-us/powershell/)
 
-**WinOptimize** es un script de procesamiento por lotes (`.bat`) diseñado para ser una solución de un solo clic para la limpieza y optimización de sistemas operativos Windows. El script es fácil de usar y automatiza varias tareas para mejorar el rendimiento del sistema.
+Un script de PowerShell robusto y seguro para auditar, aplicar y revertir optimizaciones de rendimiento en Windows 11. Diseñado con la seguridad, la transparencia y la reversibilidad como prioridades.
 
-Este repositorio también incluye una página web estática lista para ser publicada en GitHub Pages, que sirve como portal de presentación y descarga del script.
+---
 
-## Funcionalidades del Script
+## 🔥 Resumen Ejecutivo
 
-- **Limpieza de Archivos Temporales**: Borra el contenido de las carpetas `%TEMP%` y `C:\Windows\Temp`.
-- **Limpieza de Prefetch**: Vacía la carpeta `C:\Windows\Prefetch` para optimizar los tiempos de arranque.
-- **Limpieza del Visor de Eventos**: Elimina todos los registros de eventos de Windows.
-- **Plan de Energía**: Activa el plan de energía de "Máximo Rendimiento" para un rendimiento óptimo.
-- **Optimización Adicional**: Ejecuta el script de Chris Titus Tech para aplicar optimizaciones avanzadas.
-- **Descarga de QuickCPU**: Abre la página de descarga oficial de QuickCPU en el navegador.
+Este repositorio contiene un único script de PowerShell, `Optimize-Windows.ps1`, que ofrece un método profesional para mejorar el rendimiento de Windows 11. A diferencia de otros scripts "optimizadores", esta herramienta **no ejecuta comandos peligrosos**, no descarga ejecutables de terceros y **cada cambio es 100% reversible**.
 
-## Instrucciones de Uso
+## ✅ Filosofía de Diseño: Seguridad Primero
 
-El uso del script es muy sencillo:
+Este script se construyó sobre tres pilares fundamentales:
 
-1.  **Descargar el Script**:
-    -   Descarga el archivo `WinOptimize.bat` desde el botón en la [página del proyecto](https://Haplee.github.io/update-performance-w11/).
-    -   **Importante**: El enlace del botón de descarga en la página ya está configurado para este repositorio.
+1.  **Reversibilidad Total**: Antes de aplicar cualquier cambio, el script crea un **backup automático**. Si no estás satisfecho con los resultados, puedes ejecutar el modo `Revert` para restaurar tu sistema exactamente al estado en que se encontraba.
+2.  **Transparencia (Modo Auditoría)**: ¿No estás seguro de qué cambios se aplicarán? Usa el modo `Audit`. El script analizará tu sistema y te dirá exactamente qué optimizaciones recomienda, **sin modificar absolutamente nada**.
+3.  **Sin Cajas Negras**: El script no descarga ni ejecuta herramientas de fuentes no confiables. Todo lo que hace está contenido en el propio código, que es abierto y auditable por cualquiera.
 
-2.  **Ejecutar como Administrador**:
-    -   Haz clic derecho sobre el archivo `WinOptimize.bat` que descargaste.
-    -   Selecciona la opción **"Ejecutar como administrador"**.
-    -   El script se encargará de solicitar los permisos necesarios y comenzará el proceso.
-3.  **Seguir las Indicaciones**: El script te guiará a través de los pasos en una ventana de comandos.
+## 🚀 Modos de Operación
 
-## Publicación en GitHub Pages
+El script se puede ejecutar en tres modos distintos. Si lo ejecutas sin parámetros, te mostrará un menú interactivo para que elijas.
 
-La página web de este proyecto está en la carpeta `/docs` y está lista para ser desplegada.
+### 1. Modo Auditoría (`-Mode Audit`)
 
-1.  **Sube el contenido a tu repositorio** de GitHub.
-2.  Ve a **Settings > Pages** en tu repositorio.
-3.  En la sección "Build and deployment", selecciona la rama `main` (o `master`) y la carpeta `/docs` como fuente.
-4.  Guarda los cambios. Tu página estará disponible en `https://Haplee.github.io/update-performance-w11/`.
+Este es el modo más seguro y el recomendado para el primer uso. Analiza tu sistema en busca de posibles optimizaciones y genera un informe, pero no realiza ningún cambio.
 
-
-## Creación de un Archivo Ejecutable (.exe) (Opcional)
-
-Si deseas convertir el archivo `.bat` en un `.exe`, puedes usar una herramienta de terceros como "Bat To Exe Converter".
-
-1.  **Busca y descarga** un convertidor de "Bat a Exe".
-2.  **Carga el archivo** `WinOptimize.bat` en la herramienta.
-3.  **Configura y compila** el `.exe` a tu gusto.
-**Nota de seguridad**: Compilar el archivo tú mismo te da la certeza de que el `.exe` es seguro y se basa en el código que has revisado.
-
-## Cómo Clonar el Repositorio
-
-Para obtener una copia local de este proyecto, usa el siguiente comando:
-
-```bash
-git clone https://github.com/Haplee/update-performance-w11.git
+**Para ejecutar en modo Auditoría:**
+```powershell
+.\Optimize-Windows.ps1 -Mode Audit
 ```
 
+### 2. Modo Aplicar (`-Mode Apply`)
+
+Este modo aplica las optimizaciones de rendimiento. Antes de hacer nada, crea un backup completo en `C:\ProgramData\update-performance-w11\backup\`.
+
+**Para aplicar las optimizaciones:**
+```powershell
+.\Optimize-Windows.ps1 -Mode Apply
+```
+
+### 3. Modo Revertir (`-Mode Revert`)
+
+Este modo restaura tu sistema al estado anterior utilizando el último backup creado. También puedes especificar un backup concreto si tienes varios.
+
+**Para revertir los cambios:**
+```powershell
+.\Optimize-Windows.ps1 -Mode Revert
+```
+
+## 🛠️ Instrucciones de Uso
+
+1.  **Descargar el Script**:
+    *   Haz clic en el botón verde `Code` en la parte superior de esta página.
+    *   Selecciona `Download ZIP`.
+    *   Extrae el archivo `update-performance-w11-main.zip` en una carpeta de tu elección (por ejemplo, en tu Escritorio).
+
+2.  **Ejecutar el Script**:
+    *   Navega a la carpeta `src` que se encuentra dentro del directorio que extrajiste.
+    *   Haz clic derecho sobre el archivo `Optimize-Windows.ps1`.
+    *   Selecciona **"Ejecutar con PowerShell"**.
+    *   El script detectará que necesita privilegios de administrador y pedirá permiso para reiniciarse con ellos (a través del Control de Cuentas de Usuario - UAC).
+
+Aparecerá un menú interactivo para que elijas qué acción deseas realizar.
+
+## ショートカットの作成 (Crear un Acceso Directo - Opcional)
+
+Para un acceso más rápido, puedes crear un acceso directo en tu escritorio que ejecute el script directamente como administrador.
+
+1.  Clic derecho en el Escritorio > **Nuevo** > **Acceso directo**.
+2.  En "Escriba la ubicación del elemento", pega lo siguiente (ajusta la ruta si guardaste el script en otro lugar):
+    ```
+    powershell.exe -ExecutionPolicy Bypass -File "%USERPROFILE%\Desktop\update-performance-w11-main\src\Optimize-Windows.ps1"
+    ```
+3.  Haz clic en **Siguiente**, dale un nombre (ej. "Optimizador W11") y **Finalizar**.
+4.  Clic derecho en el nuevo acceso directo > **Propiedades**.
+5.  Ve a la pestaña "Acceso directo" > Botón **Opciones avanzadas...**.
+6.  Marca la casilla **"Ejecutar como administrador"** y Aceptar > Aceptar.
+
+Ahora, con un doble clic, el script se iniciará directamente en modo interactivo y con los permisos necesarios.
+
+## ⚠️ Advertencia y Licencia
+
+*   **Úsalo bajo tu propio riesgo.** Aunque este script está diseñado para ser seguro, siempre existe la posibilidad de que ocurran problemas inesperados. Se recomienda probarlo primero en un entorno que no sea de producción si es posible.
+*   Este proyecto se distribuye bajo la **Licencia MIT**. Consulta el archivo `LICENSE` para más detalles.
+
+---
+
+*Este repositorio ha sido reestructurado para promover únicamente prácticas seguras y reversibles, eliminando scripts anteriores que no cumplían con estos estándares.*
