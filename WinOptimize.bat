@@ -40,6 +40,7 @@ cls
 :: --- Limpieza de Archivos Temporales ---
 echo [INFO] Limpiando archivos temporales de usuario (%TEMP%)...
 del /f /s /q "%TEMP%\*.*"
+for /d %%p in ("%TEMP%\*") do rmdir "%%p" /s /q
 echo [INFO] Limpiando archivos temporales de Windows (C:\Windows\Temp)...
 del /f /s /q "C:\Windows\Temp\*.*"
 echo.
@@ -47,6 +48,7 @@ echo.
 :: --- Limpieza de Prefetch ---
 echo [INFO] Limpiando archivos de Prefetch (C:\Windows\Prefetch)...
 del /f /s /q "C:\Windows\Prefetch\*.*"
+for /d %%p in ("C:\Windows\Prefetch\*") do rmdir "%%p" /s /q
 echo.
 
 :: --- Limpieza del Visor de Eventos ---
