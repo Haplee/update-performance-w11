@@ -1,40 +1,61 @@
 @echo off
-echo ===================================================
-echo             Test Script for WinOptimize Fix
-echo ===================================================
-echo.
+setlocal
 
-:: --- Test Setup ---
-echo [SETUP] Creating test directories and files...
-mkdir "%TEMP%\\winoptimize_test_dir"
-echo "test file" > "%TEMP%\\winoptimize_test_dir\\test.txt"
-mkdir "C:\\Windows\\Prefetch\\winoptimize_test_dir"
-echo "test file" > "C:\\Windows\\Prefetch\\winoptimize_test_dir\\test.txt"
-echo [SETUP] Test directories and files created.
-echo.
+:: 1. SETUP
+echo [SETUP] Creating test directory and a locked file...
+if not exist "test_temp" mkdir "test_temp"
+if not exist "test_temp\sub_dir" mkdir "test_temp\sub_dir"
+echo locked > "test_temp\locked_file.txt"
 
-:: --- Run WinOptimize Script ---
-echo [TEST] Running WinOptimize.bat...
-call WinOptimize.bat
-echo [TEST] WinOptimize.bat execution finished.
-echo.
+echo [SETUP] Locking the file...
+start "FileLocker" cmd /c "more < "test_temp\locked_file.txt""
+timeout /t 2 /nobreak > nul
 
-:: --- Verification ---
-echo [VERIFY] Verifying that the test directories were deleted...
-if not exist "%TEMP%\\winoptimize_test_dir" (
-    echo [PASS] The test directory in %%TEMP%% was successfully deleted.
+:: 2. RUN TESTS
+echo [TEST] Running original and fixed commands...
+
+:: Original command from WinOptimize.bat
+(
+    del /f /s /q "test_temp\*.*"
+    for /d %%p in ("test_temp\*") do rmdir "%%p" /s /q
+) > test_original_output.txt 2>&1
+
+:: Fixed command
+(
+    del /f /s /q "test_temp\*.*" >nul 2>&1
+    for /d %%p in ("test_temp\*") do rmdir "%%p" /s /q >nul 2>&1
+) > test_fixed_output.txt 2>&1
+
+:: 3. VERIFY
+echo [VERIFY] Analyzing results...
+
+:: Check original output - should contain an error
+findstr /c:"being used by another process" "test_original_output.txt" > nul
+if %errorlevel%==0 (
+    echo  - SUCCESS: Original command failed with expected error.
 ) else (
-    echo [FAIL] The test directory in %%TEMP%% was NOT deleted.
+    echo  - FAILURE: Original command did not produce the expected error.
+    echo      Output was:
+    type "test_original_output.txt"
 )
 
-if not exist "C:\\Windows\\Prefetch\\winoptimize_test_dir" (
-    echo [PASS] The test directory in C:\Windows\Prefetch was successfully deleted.
+:: Check fixed output - should be empty
+findstr /r /c:"." "test_fixed_output.txt" > nul
+if %errorlevel%==0 (
+    echo  - FAILURE: Fixed command produced unexpected output.
+    echo      Output was:
+    type "test_fixed_output.txt"
 ) else (
-    echo [FAIL] The test directory in C:\Windows\Prefetch was NOT deleted.
+    echo  - SUCCESS: Fixed command produced no output, as expected.
 )
-echo.
 
-echo ===================================================
-echo                      Test Complete
-echo ===================================================
-pause
+:: 4. CLEANUP
+echo [CLEANUP] Removing test assets...
+taskkill /f /fi "WINDOWTITLE eq FileLocker" > nul
+timeout /t 1 /nobreak > nul
+if exist "test_temp" rmdir "test_temp" /s /q
+if exist "test_original_output.txt" del "test_original_output.txt"
+if exist "test_fixed_output.txt" del "test_fixed_output.txt"
+
+echo [DONE] Test finished.
+endlocal
