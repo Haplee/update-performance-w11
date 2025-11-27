@@ -2,7 +2,7 @@
 
 ## Descripción
 
-**WinOptimize** es un script de procesamiento por lotes (`.bat`) diseñado para ser una solución de un solo clic para la limpieza y optimización de sistemas operativos Windows. El script es fácil de usar y automatiza varias tareas para mejorar el rendimiento del sistema.
+**WinOptimize** es un script de procesamiento por lotes (`.bat`) diseñado para ser una solución de un solo clic para la limpieza y optimización de sistemas operativos Windows. El script es fácil de usar y automatiza varias tareas para mejorar el rendimiento del sistema, solicitando confirmación del usuario para acciones opcionales.
 
 Este repositorio también incluye una página web estática lista para ser publicada en GitHub Pages, que sirve como portal de presentación y descarga del script.
 
@@ -12,8 +12,8 @@ Este repositorio también incluye una página web estática lista para ser publi
 - **Limpieza de Prefetch**: Vacía la carpeta `C:\Windows\Prefetch` para optimizar los tiempos de arranque.
 - **Limpieza del Visor de Eventos**: Elimina todos los registros de eventos de Windows.
 - **Plan de Energía**: Activa el plan de energía de "Máximo Rendimiento" para un rendimiento óptimo.
-- **Optimización Adicional**: Ejecuta el script de Chris Titus Tech para aplicar optimizaciones avanzadas.
-- **Descarga de QuickCPU**: Abre la página de descarga oficial de QuickCPU en el navegador.
+- **Optimización Adicional (Opcional)**: Pregunta al usuario si desea ejecutar el script de Chris Titus Tech para aplicar optimizaciones avanzadas.
+- **Descarga de QuickCPU (Opcional)**: Pregunta al usuario si desea abrir la página de descarga oficial de QuickCPU en el navegador.
 
 ## Instrucciones de Uso
 
@@ -27,7 +27,7 @@ El uso del script es muy sencillo:
     -   Haz clic derecho sobre el archivo `WinOptimize.bat` que descargaste.
     -   Selecciona la opción **"Ejecutar como administrador"**.
     -   El script se encargará de solicitar los permisos necesarios y comenzará el proceso.
-3.  **Seguir las Indicaciones**: El script te guiará a través de los pasos en una ventana de comandos.
+3.  **Seguir las Indicaciones**: El script te guiará a través de los pasos en una ventana de comandos y te pedirá confirmación para los pasos opcionales.
 
 ## Publicación en GitHub Pages
 
@@ -55,4 +55,3 @@ Para obtener una copia local de este proyecto, usa el siguiente comando:
 ```bash
 git clone https://github.com/Haplee/update-performance-w11.git
 ```
-

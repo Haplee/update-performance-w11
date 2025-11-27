@@ -64,14 +64,24 @@ echo [INFO] Cambiando el plan de energia a 'Maximo Rendimiento'...
 powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
 echo.
 
-:: --- Ejecución de script de Chris Titus Tech ---
-echo [INFO] Ejecutando el script de optimizacion de Chris Titus Tech...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr 'https://christitus.com/win' -UseBasicParsing | iex"
+:: --- Ejecución de script de Chris Titus Tech (Opcional) ---
+set /p response="[PREGUNTA] Desea ejecutar el script de optimizacion de Chris Titus Tech? (S/N): "
+if /i "%response%"=="S" (
+    echo [INFO] Ejecutando el script de optimizacion de Chris Titus Tech...
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr 'https://christitus.com/win' -UseBasicParsing | iex"
+) else (
+    echo [INFO] Omitiendo el script de Chris Titus Tech.
+)
 echo.
 
-:: --- Abrir navegador para descargar QuickCPU ---
-echo [INFO] Abriendo el navegador para descargar QuickCPU...
-start "" "https://coderbag.com/product/quickcpu"
+:: --- Abrir navegador para descargar QuickCPU (Opcional) ---
+set /p response="[PREGUNTA] Desea abrir la pagina para descargar QuickCPU? (S/N): "
+if /i "%response%"=="S" (
+    echo [INFO] Abriendo el navegador para descargar QuickCPU...
+    start "" "https://coderbag.com/product/quickcpu"
+) else (
+    echo [INFO] Omitiendo la descarga de QuickCPU.
+)
 echo.
 
 echo ===================================================
