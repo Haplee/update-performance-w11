@@ -29,12 +29,21 @@ set "COLOR_TITLE=%ESC%[96m"
 set "COLOR_INFO=%ESC%[92m"
 set "COLOR_QUESTION=%ESC%[93m"
 set "COLOR_PAUSE=%ESC%[95m"
+set "COLOR_BORDER=%ESC%[94m"
+set "COLOR_SUCCESS=%ESC%[92m"
 
-:: --- Inicio del Script de Optimización ---
+:: --- Pantalla de Bienvenida ---
 cls
-echo %COLOR_TITLE%===================================================%COLOR_RESET%
-echo %COLOR_TITLE%     WinOptimize - Herramienta de Limpieza         %COLOR_RESET%
-echo %COLOR_TITLE%===================================================%COLOR_RESET%
+echo %COLOR_BORDER%ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»%COLOR_RESET%
+echo %COLOR_BORDER%º%COLOR_TITLE%  _       ___          __   _  __ _         _                    %COLOR_BORDER%º%COLOR_RESET%
+echo %COLOR_BORDER%º%COLOR_TITLE% | |     |_ _|  _ __   / _| (_) / _` |  ___  | |_    ___   _ __   %COLOR_BORDER%º%COLOR_RESET%
+echo %COLOR_BORDER%º%COLOR_TITLE% | |      | |  | '_ \ | |_  | || (_| | / _ \ | __|  / _ \ | '__|  %COLOR_BORDER%º%COLOR_RESET%
+echo %COLOR_BORDER%º%COLOR_TITLE% | |___   | |  | | | ||  _| | || (_| || (_) || |_  | (_) || |     %COLOR_BORDER%º%COLOR_RESET%
+echo %COLOR_BORDER%º%COLOR_TITLE% |_____| |___| |_| |_||_|   |_| \__, | \___/  \__|  \___/ |_|     %COLOR_BORDER%º%COLOR_RESET%
+echo %COLOR_BORDER%º%COLOR_TITLE%                               |___/                              %COLOR_BORDER%º%COLOR_RESET%
+echo %COLOR_BORDER%º%COLOR_INFO%             Herramienta de Limpieza y optimizacion             %COLOR_BORDER%º%COLOR_RESET%
+echo %COLOR_BORDER%º                                                                º%COLOR_RESET%
+echo %COLOR_BORDER%ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼%COLOR_RESET%
 echo.
 echo Este script realizara las siguientes acciones:
 echo  - Limpieza de archivos temporales.
@@ -46,39 +55,43 @@ echo  - Apertura de la pagina de descarga de QuickCPU.
 echo.
 echo %COLOR_PAUSE%Presiona cualquier tecla para continuar...%COLOR_RESET%
 pause >nul
-cls
 
-:: --- Limpieza de Archivos Temporales ---
-echo %COLOR_INFO%[INFO] Limpiando archivos temporales de usuario (%%TEMP%%)...%COLOR_RESET%
+:: --- Inicio de Tareas ---
+cls
+echo.
+echo %COLOR_TITLE%  Ú Tareas de Optimizacion%COLOR_RESET%
+echo %COLOR_BORDER% ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»%COLOR_RESET%
+echo %COLOR_BORDER% º%COLOR_RESET%
+
+echo %COLOR_BORDER% º%COLOR_RESET%  - Limpiando archivos temporales...
 del /f /s /q "%TEMP%\*.*" >nul 2>&1
 for /d %%p in ("%TEMP%\*") do rmdir "%%p" /s /q >nul 2>&1
-echo %COLOR_INFO%[INFO] Limpiando archivos temporales de Windows (C:\Windows\Temp)...%COLOR_RESET%
 del /f /s /q "C:\Windows\Temp\*.*" >nul 2>&1
-echo.
+echo %COLOR_BORDER% º%COLOR_SUCCESS%    └> Limpieza completada.%COLOR_RESET%
+echo %COLOR_BORDER% º%COLOR_RESET%
 
-:: --- Limpieza de Prefetch ---
-echo %COLOR_INFO%[INFO] Limpiando archivos de Prefetch (C:\Windows\Prefetch)...%COLOR_RESET%
+echo %COLOR_BORDER% º%COLOR_RESET%  - Limpiando archivos de Prefetch...
 del /f /s /q "C:\Windows\Prefetch\*.*" >nul 2>&1
 for /d %%p in ("C:\Windows\Prefetch\*") do rmdir "%%p" /s /q >nul 2>&1
-echo.
+echo %COLOR_BORDER% º%COLOR_SUCCESS%    └> Limpieza completada.%COLOR_RESET%
+echo %COLOR_BORDER% º%COLOR_RESET%
 
-:: --- Limpieza del Visor de Eventos ---
-echo %COLOR_INFO%[INFO] Limpiando todos los registros del Visor de Eventos en paralelo...%COLOR_RESET%
+echo %COLOR_BORDER% º%COLOR_RESET%  - Limpiando registros del Visor de Eventos...
 for /f "tokens=*" %%a in ('wevtutil el') do (
     start "" /b wevtutil cl "%%a" >nul 2>nul
 )
-
 :wait_for_wevtutil
 timeout /t 1 /nobreak >nul
 tasklist /fi "IMAGENAME eq wevtutil.exe" 2>nul | find "wevtutil.exe" >nul
 if %errorlevel%==0 goto wait_for_wevtutil
+echo %COLOR_BORDER% º%COLOR_SUCCESS%    └> Limpieza completada.%COLOR_RESET%
+echo %COLOR_BORDER% º%COLOR_RESET%
 
-echo %COLOR_INFO%[INFO] Limpieza de registros del Visor de Eventos completada.%COLOR_RESET%
-echo.
-
-:: --- Cambiar Plan de Energía a Máximo Rendimiento ---
-echo %COLOR_INFO%[INFO] Cambiando el plan de energia a 'Maximo Rendimiento'...%COLOR_RESET%
+echo %COLOR_BORDER% º%COLOR_RESET%  - Activando el plan de 'Maximo Rendimiento'...
 powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
+echo %COLOR_BORDER% º%COLOR_SUCCESS%    └> Plan de energia activado.%COLOR_RESET%
+echo %COLOR_BORDER% º%COLOR_RESET%
+echo %COLOR_BORDER% ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼%COLOR_RESET%
 echo.
 
 :: --- Ejecución de script de Chris Titus Tech (Opcional) ---
@@ -103,10 +116,10 @@ if /i "%response%"=="S" (
 )
 echo.
 
-echo %COLOR_TITLE%===================================================%COLOR_RESET%
-echo %COLOR_TITLE%       Proceso de optimizacion finalizado          %COLOR_RESET%
-echo %COLOR_TITLE%===================================================%COLOR_RESET%
+echo %COLOR_BORDER% ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»%COLOR_RESET%
+echo %COLOR_BORDER% º%COLOR_TITLE%            Proceso de optimizacion finalizado con exito            %COLOR_BORDER%º%COLOR_RESET%
+echo %COLOR_BORDER% ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼%COLOR_RESET%
 echo.
-echo %COLOR_PAUSE%Presiona cualquier tecla para salir...%COLOR_RESET%
+echo %COLOR_PAUSE%           Presiona cualquier tecla para salir...%COLOR_RESET%
 pause >nul
 exit
