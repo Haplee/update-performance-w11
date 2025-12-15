@@ -52,11 +52,17 @@ for /d %%p in ("C:\Windows\Prefetch\*") do rmdir "%%p" /s /q >nul 2>&1
 echo.
 
 :: --- Limpieza del Visor de Eventos ---
-echo [INFO] Limpiando todos los registros del Visor de Eventos...
+echo [INFO] Limpiando todos los registros del Visor de Eventos en paralelo...
 for /f "tokens=*" %%a in ('wevtutil el') do (
-    wevtutil cl "%%a" >nul 2>nul
-    echo  - Limpiado: %%a
+    start "" /b wevtutil cl "%%a" >nul 2>nul
 )
+
+:wait_for_wevtutil
+timeout /t 1 /nobreak >nul
+tasklist /fi "IMAGENAME eq wevtutil.exe" 2>nul | find "wevtutil.exe" >nul
+if %errorlevel%==0 goto wait_for_wevtutil
+
+echo [INFO] Limpieza de registros del Visor de Eventos completada.
 echo.
 
 :: --- Cambiar Plan de Energía a Máximo Rendimiento ---
