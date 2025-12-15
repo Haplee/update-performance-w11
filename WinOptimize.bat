@@ -88,8 +88,13 @@ echo %COLOR_BORDER% º%COLOR_SUCCESS%    └^> Limpieza completada.%COLOR_RESET%
 echo %COLOR_BORDER% º%COLOR_RESET%
 
 echo %COLOR_BORDER% º%COLOR_RESET%  - Activando el plan de 'Maximo Rendimiento'...
-powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
-echo %COLOR_BORDER% º%COLOR_SUCCESS%    └^> Plan de energia activado.%COLOR_RESET%
+powercfg /list | find "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c" >nul
+if %errorlevel%==0 (
+    powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
+    echo %COLOR_BORDER% º%COLOR_SUCCESS%    └^> Plan de energia activado.%COLOR_RESET%
+) else (
+    echo %COLOR_BORDER% º%COLOR_INFO%    └^> El plan de energia 'Maximo Rendimiento' no esta disponible.%COLOR_RESET%
+)
 echo %COLOR_BORDER% º%COLOR_RESET%
 echo %COLOR_BORDER% ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼%COLOR_RESET%
 echo.
