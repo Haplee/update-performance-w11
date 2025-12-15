@@ -67,13 +67,13 @@ echo %COLOR_BORDER% º%COLOR_RESET%  - Limpiando archivos temporales...
 del /f /s /q "%TEMP%\*.*" >nul 2>&1
 for /d %%p in ("%TEMP%\*") do rmdir "%%p" /s /q >nul 2>&1
 del /f /s /q "C:\Windows\Temp\*.*" >nul 2>&1
-echo %COLOR_BORDER% º%COLOR_SUCCESS%    └> Limpieza completada.%COLOR_RESET%
+echo %COLOR_BORDER% º%COLOR_SUCCESS%    └^> Limpieza completada.%COLOR_RESET%
 echo %COLOR_BORDER% º%COLOR_RESET%
 
 echo %COLOR_BORDER% º%COLOR_RESET%  - Limpiando archivos de Prefetch...
 del /f /s /q "C:\Windows\Prefetch\*.*" >nul 2>&1
 for /d %%p in ("C:\Windows\Prefetch\*") do rmdir "%%p" /s /q >nul 2>&1
-echo %COLOR_BORDER% º%COLOR_SUCCESS%    └> Limpieza completada.%COLOR_RESET%
+echo %COLOR_BORDER% º%COLOR_SUCCESS%    └^> Limpieza completada.%COLOR_RESET%
 echo %COLOR_BORDER% º%COLOR_RESET%
 
 echo %COLOR_BORDER% º%COLOR_RESET%  - Limpiando registros del Visor de Eventos...
@@ -84,12 +84,12 @@ for /f "tokens=*" %%a in ('wevtutil el') do (
 timeout /t 1 /nobreak >nul
 tasklist /fi "IMAGENAME eq wevtutil.exe" 2>nul | find "wevtutil.exe" >nul
 if %errorlevel%==0 goto wait_for_wevtutil
-echo %COLOR_BORDER% º%COLOR_SUCCESS%    └> Limpieza completada.%COLOR_RESET%
+echo %COLOR_BORDER% º%COLOR_SUCCESS%    └^> Limpieza completada.%COLOR_RESET%
 echo %COLOR_BORDER% º%COLOR_RESET%
 
 echo %COLOR_BORDER% º%COLOR_RESET%  - Activando el plan de 'Maximo Rendimiento'...
 powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
-echo %COLOR_BORDER% º%COLOR_SUCCESS%    └> Plan de energia activado.%COLOR_RESET%
+echo %COLOR_BORDER% º%COLOR_SUCCESS%    └^> Plan de energia activado.%COLOR_RESET%
 echo %COLOR_BORDER% º%COLOR_RESET%
 echo %COLOR_BORDER% ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼%COLOR_RESET%
 echo.
