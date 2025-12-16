@@ -100,6 +100,8 @@ echo %COLOR_BORDER% ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ
 echo.
 
 :: --- Ejecución de script de Chris Titus Tech (Opcional) ---
+echo %COLOR_QUESTION%[ADVERTENCIA DE SEGURIDAD] El siguiente paso ejecutara un script directamente desde Internet.%COLOR_RESET%
+echo %COLOR_QUESTION%Esto es potencialmente peligroso. Asegurese de confiar en la fuente (christitus.com).%COLOR_RESET%
 set "pregunta=%COLOR_QUESTION%[PREGUNTA] Desea ejecutar el script de optimizacion de Chris Titus Tech? (S/N): %COLOR_RESET%"
 set /p response="%pregunta%"
 if /i "%response%"=="S" (
