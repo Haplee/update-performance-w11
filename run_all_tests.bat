@@ -18,6 +18,10 @@ echo [TEST] --- Ejecutando test_powerplan.bat ---
 call test_powerplan.bat
 echo.
 
+echo [TEST] --- Ejecutando test_security_warning.bat ---
+call test_security_warning.bat
+echo.
+
 echo [INFO] ===============================================
 echo [INFO]           SUITE DE PRUEBAS FINALIZADA
 echo [INFO] ===============================================
