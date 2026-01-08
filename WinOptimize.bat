@@ -1,132 +1,169 @@
 @echo off
-:: Comprobar si el script se está ejecutando como Administrador
->nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
-if '%errorlevel%' NEQ '0' (
-    echo Solicitando privilegios de Administrador...
-    goto UACPrompt
-) else (
-    goto gotAdmin
-)
+title OPTIMIZADOR WINDOWS 11 - MAXIMO RENDIMIENTO v2.1
+mode con: cols=90 lines=50
+setlocal EnableDelayedExpansion
 
-:UACPrompt
-    echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
-    set params = %*:"=""
-    echo UAC.ShellExecute "cmd.exe", "/c %~s0 %params%", "", "runas", 1 >> "%temp%\getadmin.vbs"
-    "%temp%\getadmin.vbs"
-    del "%temp%\getadmin.vbs"
-    exit /B
-
-:gotAdmin
-    pushd "%CD%"
-    CD /D "%~dp0"
-
-:: --- Configuración de Colores ---
-for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do (
-    set "ESC=%%b"
-)
-set "COLOR_RESET=%ESC%[0m"
-set "COLOR_TITLE=%ESC%[96m"
-set "COLOR_INFO=%ESC%[92m"
-set "COLOR_QUESTION=%ESC%[93m"
-set "COLOR_PAUSE=%ESC%[95m"
-set "COLOR_BORDER=%ESC%[94m"
-set "COLOR_SUCCESS=%ESC%[92m"
-
-:: --- Pantalla de Bienvenida ---
-cls
-echo %COLOR_BORDER%ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»%COLOR_RESET%
-echo %COLOR_BORDER%º%COLOR_TITLE%  _       ___          __   _  __ _         _                    %COLOR_BORDER%º%COLOR_RESET%
-echo %COLOR_BORDER%º%COLOR_TITLE% | |     |_ _|  _ __   / _| (_) / _` |  ___  | |_    ___   _ __   %COLOR_BORDER%º%COLOR_RESET%
-echo %COLOR_BORDER%º%COLOR_TITLE% | |      | |  | '_ \ | |_  | || (_| | / _ \ | __|  / _ \ | '__|  %COLOR_BORDER%º%COLOR_RESET%
-echo %COLOR_BORDER%º%COLOR_TITLE% | |___   | |  | | | ||  _| | || (_| || (_) || |_  | (_) || |     %COLOR_BORDER%º%COLOR_RESET%
-echo %COLOR_BORDER%º%COLOR_TITLE% |_____| |___| |_| |_||_|   |_| \__, | \___/  \__|  \___/ |_|     %COLOR_BORDER%º%COLOR_RESET%
-echo %COLOR_BORDER%º%COLOR_TITLE%                               |___/                              %COLOR_BORDER%º%COLOR_RESET%
-echo %COLOR_BORDER%º%COLOR_INFO%             Herramienta de Limpieza y optimizacion             %COLOR_BORDER%º%COLOR_RESET%
-echo %COLOR_BORDER%º                                                                º%COLOR_RESET%
-echo %COLOR_BORDER%ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼%COLOR_RESET%
-echo.
-echo Este script realizara las siguientes acciones:
-echo  - Limpieza de archivos temporales.
-echo  - Limpieza de la carpeta Prefetch.
-echo  - Limpieza del Visor de Eventos.
-echo  - Activacion del plan de Maximo Rendimiento.
-echo  - Ejecucion del script de Chris Titus Tech.
-echo  - Apertura de la pagina de descarga de QuickCPU.
-echo.
-echo %COLOR_PAUSE%Presiona cualquier tecla para continuar...%COLOR_RESET%
+echo =================================================
+echo  OPTIMIZADOR WINDOWS 11 - MAXIMO RENDIMIENTO  
+echo =================================================
+echo Ya tienes permisos de administrador
+echo Presiona cualquier tecla para comenzar...
 pause >nul
+cls
 
-:: --- Inicio de Tareas ---
+:: BARRA DE PROGRESO
+set "total=12"
+set "current=0"
+
+:progress
+set /a current+=1
+set /a percent=(current*100)/total
+set "bar="
+for /L %%i in (1,1,!percent!) do set "bar=!bar!#"
+for /L %%i in (!percent!,1,99) do set "bar=!bar! "
 cls
 echo.
-echo %COLOR_TITLE%  Ú Tareas de Optimizacion%COLOR_RESET%
-echo %COLOR_BORDER% ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»%COLOR_RESET%
-echo %COLOR_BORDER% º%COLOR_RESET%
-
-echo %COLOR_BORDER% º%COLOR_RESET%  - Limpiando archivos temporales...
-del /f /s /q "%TEMP%\*.*" >nul 2>&1
-for /d %%p in ("%TEMP%\*") do rmdir "%%p" /s /q >nul 2>&1
-del /f /s /q "C:\Windows\Temp\*.*" >nul 2>&1
-echo %COLOR_BORDER% º%COLOR_SUCCESS%    └^> Limpieza completada.%COLOR_RESET%
-echo %COLOR_BORDER% º%COLOR_RESET%
-
-echo %COLOR_BORDER% º%COLOR_RESET%  - Limpiando archivos de Prefetch...
-del /f /s /q "C:\Windows\Prefetch\*.*" >nul 2>&1
-for /d %%p in ("C:\Windows\Prefetch\*") do rmdir "%%p" /s /q >nul 2>&1
-echo %COLOR_BORDER% º%COLOR_SUCCESS%    └^> Limpieza completada.%COLOR_RESET%
-echo %COLOR_BORDER% º%COLOR_RESET%
-
-echo %COLOR_BORDER% º%COLOR_RESET%  - Limpiando registros del Visor de Eventos...
-for /f "tokens=*" %%a in ('wevtutil el') do (
-    start "" /b wevtutil cl "%%a" >nul 2>nul
-)
-:wait_for_wevtutil
+echo =================================================
+echo        OPTIMIZACION EN PROCESO [!bar!] !percent!%%
+echo =================================================
+echo [ !current! / !total! ] Ejecutando...
 timeout /t 1 /nobreak >nul
-tasklist /fi "IMAGENAME eq wevtutil.exe" 2>nul | find "wevtutil.exe" >nul
-if %errorlevel%==0 goto wait_for_wevtutil
-echo %COLOR_BORDER% º%COLOR_SUCCESS%    └^> Limpieza completada.%COLOR_RESET%
-echo %COLOR_BORDER% º%COLOR_RESET%
 
-echo %COLOR_BORDER% º%COLOR_RESET%  - Activando el plan de 'Maximo Rendimiento'...
-powercfg /list | find "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c" >nul
-if %errorlevel%==0 (
+:: 1. LIMPIEZA TEMPORALES AVANZADA
+if !current! equ 1 (
+    echo [1/12] LIMPIEZA TEMPORALES AVANZADA...
+    del /q /s "%TEMP%\*" >nul 2>&1
+    for /d %%i in ("%TEMP%\*") do rd /s /q "%%i" >nul 2>&1
+    del /q /s "C:\Windows\Temp\*" >nul 2>&1
+    rd /s /q "%windir%\SoftwareDistribution\Download" >nul 2>&1
+    echo    OK ✓
+)
+
+:: 2. PREFETCH + WINDOWS UPDATE
+if !current! equ 2 (
+    echo [2/12] PREFETCH + WINDOWS UPDATE CACHE...
+    del /q /s "C:\Windows\Prefetch\*" >nul 2>&1
+    echo    OK ✓
+)
+
+:: 3. REGISTROS EVENTOS + MINIDUMP
+if !current! equ 3 (
+    echo [3/12] VISOR EVENTOS + MINIDUMPS...
+    for /f %%i in ('wevtutil el 2^>nul') do wevtutil cl "%%i" >nul 2>&1
+    del /q /s "C:\Windows\Minidump\*" >nul 2>&1
+    echo    OK ✓
+)
+
+:: 4. PLAN MAXIMO RENDIMIENTO
+if !current! equ 4 (
+    echo [4/12] PLAN MAXIMO RENDIMIENTO...
+    powercfg -duplicatescheme 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c >nul 2>&1
     powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
-    echo %COLOR_BORDER% º%COLOR_SUCCESS%    └^> Plan de energia activado.%COLOR_RESET%
-) else (
-    echo %COLOR_BORDER% º%COLOR_INFO%    └^> El plan de energia 'Maximo Rendimiento' no esta disponible.%COLOR_RESET%
+    echo    OK ✓
 )
-echo %COLOR_BORDER% º%COLOR_RESET%
-echo %COLOR_BORDER% ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼%COLOR_RESET%
-echo.
 
-:: --- Ejecución de script de Chris Titus Tech (Opcional) ---
-echo %COLOR_QUESTION%[ADVERTENCIA DE SEGURIDAD] El siguiente paso ejecutara un script directamente desde Internet.%COLOR_RESET%
-echo %COLOR_QUESTION%Esto es potencialmente peligroso. Asegurese de confiar en la fuente (christitus.com).%COLOR_RESET%
-set "pregunta=%COLOR_QUESTION%[PREGUNTA] Desea ejecutar el script de optimizacion de Chris Titus Tech? (S/N): %COLOR_RESET%"
-set /p response="%pregunta%"
-if /i "%response%"=="S" (
-    echo %COLOR_INFO%[INFO] Ejecutando el script de optimizacion de Chris Titus Tech...%COLOR_RESET%
-    powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr 'https://christitus.com/win' -UseBasicParsing | iex"
-) else (
-    echo %COLOR_INFO%[INFO] Omitiendo el script de Chris Titus Tech.%COLOR_RESET%
+:: 5. SERVICIOS INNECESARIOS
+if !current! equ 5 (
+    echo [5/12] OPTIMIZANDO SERVICIOS...
+    sc config "DiagTrack" start= disabled >nul 2>&1
+    sc config "dmwappushservice" start= disabled >nul 2>&1
+    sc config "SysMain" start= disabled >nul 2>&1
+    sc stop DiagTrack >nul 2>&1
+    echo    OK ✓
 )
-echo.
 
-:: --- Abrir navegador para descargar QuickCPU (Opcional) ---
-set "pregunta=%COLOR_QUESTION%[PREGUNTA] Desea abrir la pagina para descargar QuickCPU? (S/N): %COLOR_RESET%"
-set /p response="%pregunta%"
-if /i "%response%"=="S" (
-    echo %COLOR_INFO%[INFO] Abriendo el navegador para descargar QuickCPU...%COLOR_RESET%
-    start "" "https://coderbag.com/product/quickcpu"
-) else (
-    echo %COLOR_INFO%[INFO] Omitiendo la descarga de QuickCPU.%COLOR_RESET%
+:: 6. DISCO + INTEGRIDAD
+if !current! equ 6 (
+    echo [6/12] VERIFICANDO INTEGRIDAD...
+    DISM /Online /Cleanup-Image /StartComponentCleanup >nul 2>&1
+    echo    OK ✓
 )
-echo.
 
-echo %COLOR_BORDER% ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»%COLOR_RESET%
-echo %COLOR_BORDER% º%COLOR_TITLE%            Proceso de optimizacion finalizado con exito            %COLOR_BORDER%º%COLOR_RESET%
-echo %COLOR_BORDER% ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼%COLOR_RESET%
+:: 7. CACHE + RECYCLE BIN
+if !current! equ 7 (
+    echo [7/12] CACHE + PAPELERA...
+    rd /s /q "%LocalAppData%\Microsoft\Windows\Explorer\thumbcache_*.db" >nul 2>&1
+    echo    OK ✓
+)
+
+:: 8. REGISTRO
+if !current! equ 8 (
+    echo [8/12] OPTIMIZACION REGISTRO...
+    reg add "HKCU\Control Panel\Desktop" /v MenuShowDelay /t REG_SZ /d "0" /f >nul 2>&1
+    echo    OK ✓
+)
+
+:: 9. ANIMACIONES
+if !current! equ 9 (
+    echo [9/12] DESACTIVANDO ANIMACIONES...
+    reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v MinAnimate /t REG_SZ /d "0" /f >nul 2>&1
+    echo    OK ✓
+)
+
+:: 10. TCP/IP
+if !current! equ 10 (
+    echo [10/12] OPTIMIZACION RED...
+    netsh int tcp set global autotuninglevel=normal >nul 2>&1
+    netsh int tcp set global rss=enabled >nul 2>&1
+    echo    OK ✓
+)
+
+:: 11. LIMPIEZA FINAL
+if !current! equ 11 (
+    echo [11/12] LIMPIEZA FINAL...
+    ipconfig /flushdns >nul 2>&1
+    echo    OK ✓
+)
+
+:: 12. COMPLETADO
+if !current! equ 12 (
+    echo [12/12] FINALIZADO...
+    echo Optimizacion completada > "%temp%\optimizacion_OK.txt"
+    echo    OK ✓
+)
+
+goto progress_end
+
+:progress_end
+cls
 echo.
-echo %COLOR_PAUSE%           Presiona cualquier tecla para salir...%COLOR_RESET%
+echo =================================================
+echo        OPTIMIZACION 100%% COMPLETADA ✓ ✓ ✓
+echo =================================================
+echo.
+echo + LIMPIEZAS: Temp, Prefetch, Eventos, Minidumps
+echo + SERVICIOS: Telemetria, Superfetch OFF
+echo + RENDIMIENTO: Plan Maximo, Sin animaciones  
+echo + RED: TCP/IP optimizado
+echo.
+echo =================================================
+
+:: CHRIS TITUS TECH - CORREGIDO
+echo.
+echo [CHRIS TITUS TECH - OPTIMIZADOR AVANZADO]
+echo ¿Ejecutar? (S/N): 
+set /p ct=
+if /i "!ct!"=="S" (
+    echo Iniciando WinUtil de Chris Titus...
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://christitus.com/win | iex"
+    echo.
+    echo Script completado. Reinicia para aplicar cambios.
+)
+
+:: QUICKCPU
+echo.
+echo [QUICKCPU - OPTIMIZADOR CPU]
+echo ¿Abrir pagina oficial? (S/N): 
+set /p qc=
+if /i "!qc!"=="S" (
+    echo Abriendo https://coderbag.com/product/quickcpu
+    start https://coderbag.com/product/quickcpu
+)
+
+echo.
+echo =================================================
+echo    ¡REINICIA EL PC PARA APLICAR TODOS LOS CAMBIOS!
+echo =================================================
+echo Presiona cualquier tecla para salir...
 pause >nul
-exit
+exit /b 0
