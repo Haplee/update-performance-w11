@@ -8,20 +8,19 @@
 
 ## ✨ Funcionalidades Completas (12 Pasos)
 
-[1/12] LIMPIEZA TEMPORALES AVANZADA (%TEMP%, WinTemp, Update Cache)
-[2/12] PREFETCH + WINDOWS UPDATE (Arranque más rápido)
-[3/12] VISOR EVENTOS + MINIDUMPS (Libera GB de logs)
-[4/12] PLAN MÁXIMO RENDIMIENTO (CPU/GPU al 100%)
-[5/12] SERVICIOS INNECESARIOS OFF (Telemetría, Superfetch)
-[6/12] INTEGRIDAD SISTEMA (DISM + SFC automático)
-[7/12] CACHE + PAPELERA RECYCLE (Thumbnails, basura)
-[8/12] OPTIMIZACIÓN REGISTRO (Menús instantáneos)
-[9/12] ANIMACIONES OFF (Windows súper fluido)
-[10/12] RED TCP/IP OPTIMIZADA (Gaming/ping mejorado)
-[11/12] LIMPIEZA FINAL (DNS cache, Winsock)
-[12/12] ARCHIVO LOG (Prueba de éxito)
+- [1/12] LIMPIEZA TEMPORALES AVANZADA (%TEMP%, WinTemp, Update Cache)
+- [2/12] PREFETCH + WINDOWS UPDATE (Arranque más rápido)
+- [3/12] VISOR EVENTOS + MINIDUMPS (Libera GB de logs)
+- [4/12] PLAN MÁXIMO RENDIMIENTO (CPU/GPU al 100%)
+- [5/12] SERVICIOS INNECESARIOS OFF (Telemetría, Superfetch)
+- [6/12] INTEGRIDAD SISTEMA (DISM + SFC automático)
+- [7/12] CACHE + PAPELERA RECYCLE (Thumbnails, basura)
+- [8/12] OPTIMIZACIÓN REGISTRO (Menús instantáneos)
+- [9/12] ANIMACIONES OFF (Windows súper fluido)
+- [10/12] RED TCP/IP OPTIMIZADA (Gaming/ping mejorado)
+- [11/12] LIMPIEZA FINAL (DNS cache, Winsock)
+- [12/12] ARCHIVO LOG (Prueba de éxito)
 
-text
 
 ## 🎯 **BONUS PREMIUM (Opcional)**
 - **Chris Titus Tech WinUtil** (optimizador avanzado)
@@ -36,12 +35,9 @@ Clic derecho → "Ejecutar como administrador"
 
 ¡Listo! Sigue las instrucciones en pantalla
 
-text
-
 ### **MÉTODO 2: CMD Admin (Recomendado)**
 Win+R → cmd → Ctrl+Shift+Enter → arrastrar .bat
 
-text
 
 ## 🌐 Publicación GitHub Pages
 
@@ -55,7 +51,6 @@ Branch: main | Folder: /docs
 
 URL: https://Haplee.github.io/update-performance-w11/
 
-text
 
 ## ⚙️ Convertir a .exe (Opcional)
 
@@ -63,7 +58,6 @@ text
 Bat To Exe Converter (Gratis)
 Advanced BAT to EXE Converter (Pro)
 
-text
 
 **Pasos:**
 1. Carga `WinOptimize.bat`
@@ -82,8 +76,6 @@ update-performance-w11/
 │ └── download.bat # Enlace directo
 └── LICENSE
 
-text
-
 ## 🔧 Requisitos
 
 - ✅ **Windows 10/11** (x64)
@@ -100,7 +92,6 @@ text
 ✅ +5-15GB espacio libre típico
 ✅ Ping reducido (TCP/IP optimizado)
 
-text
 
 ## ⚠️ Advertencias
 
@@ -109,7 +100,6 @@ text
 🔸 Haz backup antes de optimizaciones avanzadas
 🔸 Compatible Windows 10/11 Home/Pro/Enterprise
 
-text
 
 ## 👨‍💻 Clonar Repositorio
 
