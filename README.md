@@ -45,12 +45,12 @@
 
 ## 📁 Estructura del Proyecto
 ```text
-update-performance-w11/
-├── WinOptimize.bat    # Script Ultimate v5.2
-├── README.md          # Documentación pro
-└── docs/              # Landing Page web
-    ├── index.html     # Web con diseño premium
-    └── css/style.css  # Estilos y animaciones
+├── 📁 docs
+│   ├── 📁 css
+│   │   └── 🎨 style.css
+│   └── 🌐 index.html
+├── 📝 README.md
+└── 📄 WinOptimize.bat
 ```
 
 ## 👨‍💻 Créditos
