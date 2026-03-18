@@ -69,8 +69,8 @@
                 <div class="download-area">
                     <h2><i class="fas fa-cloud-arrow-down"></i> Área de Descarga</h2>
                     <p>Obtén la versión más estable y actualizada de FranVi.</p>
-                    <a href="https://raw.githubusercontent.com/Haplee/update-performance-w11/main/WinOptimize.bat"
-                        class="btn-download" id="downloadBtn" download="WinOptimize.bat">
+                    <!-- El href ya no importa, el JS maneja todo -->
+                    <a href="#" class="btn-download" id="downloadBtn">
                         <i class="fab fa-windows"></i> Descargar v5.2 Ultimate
                     </a>
                 </div>
@@ -83,11 +83,55 @@
     </div>
 
     <script>
-        // Lógica para asegurar la descarga del archivo .bat
-        document.getElementById('downloadBtn').addEventListener('click', function (e) {
-            // Si el enlace es de GitHub Raw, a veces el navegador intenta abrirlo como texto.
-            // Forzamos la descarga manual si es necesario.
-            console.log('Iniciando descarga de WinOptimize.bat...');
+        const RAW_URL = 'https://raw.githubusercontent.com/Haplee/update-performance-w11/main/WinOptimize.bat';
+        const FILENAME = 'WinOptimize.bat';
+
+        document.getElementById('downloadBtn').addEventListener('click', async function (e) {
+            e.preventDefault();
+
+            const btn = this;
+            const originalHTML = btn.innerHTML;
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Descargando...';
+            btn.style.pointerEvents = 'none';
+
+            try {
+                const response = await fetch(RAW_URL);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const blob = await response.blob();
+
+                // Forzar el tipo correcto para .bat
+                const batBlob = new Blob([blob], { type: 'application/octet-stream' });
+
+                const url = URL.createObjectURL(batBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = FILENAME;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                // Liberar memoria
+                setTimeout(() => URL.revokeObjectURL(url), 5000);
+
+                btn.innerHTML = '<i class="fas fa-check"></i> ¡Descargado!';
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.style.pointerEvents = '';
+                }, 3000);
+
+            } catch (err) {
+                console.error('Error al descargar:', err);
+                btn.innerHTML = '<i class="fas fa-triangle-exclamation"></i> Error – Reintenta';
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.style.pointerEvents = '';
+                }, 3000);
+            }
         });
     </script>
 </body>
