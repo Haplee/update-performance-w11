@@ -1,4 +1,4 @@
-# 🚀 WinOptimize Ultimate v5.2 - MÁXIMO RENDIMIENTO
+# 🚀 WinOptimize Ultimate v5.3 - MÁXIMO RENDIMIENTO
 
 **WinOptimize Ultimate** es la herramienta definitiva de optimización para Windows 11 y 10, diseñada para llevar tu PC al siguiente nivel con un solo clic. Desarrollado por **FranVi**, este script combina limpiezas profundas con ajustes de registro de nivel profesional y un modo **EXTREME** único en su clase.
 
@@ -44,7 +44,7 @@
 ---
 
 ## 📁 Estructura del Proyecto
-```text
+```WinOptimize Ultimate
 ├── 📁 docs
 │   ├── 📁 css
 │   │   └── 🎨 style.css
@@ -54,8 +54,8 @@
 ```
 
 ## 👨‍💻 Créditos
-Desarrollado con ❤️ por **FranVi** y la comunidad.
-Última actualización: **12 de Enero, 2026**
+Desarrollado con ❤️ por **FranVi**.
+Última actualización: **18/03/2026**
 
 ---
 *Advertencia: Aunque el script es seguro, siempre se recomienda crear un punto de restauración manual antes de realizar cambios profundos en el sistema.*
