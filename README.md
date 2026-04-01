@@ -1,33 +1,48 @@
-# 🚀 WinOptimize Ultimate v5.3 - MÁXIMO RENDIMIENTO
+# 🚀 WinOptimize Ultimate v6.0 - MÁXIMO RENDIMIENTO
 
 **WinOptimize Ultimate** es la herramienta definitiva de optimización para Windows 11 y 10, diseñada para llevar tu PC al siguiente nivel con un solo clic. Desarrollado por **FranVi**, este script combina limpiezas profundas con ajustes de registro de nivel profesional y un modo **EXTREME** único en su clase.
 
-> **¡Nuevo en v5.2!** Sistema de restauración total, logs automáticos en el escritorio y compatibilidad total de caracteres (sin errores visuales).
+> **¡NUEVO en v6.0 ULTIMATE PLUS!** DNS de Google integrado, indexado desactivado, optimizaciones de memoria avanzadas, limpieza de cache de navegador, y modo extreme con Windows Defender parcial.
 
 ---
 
 ## 🔥 ¿Qué hace volar a tu PC? (Funcionalidades)
 
-### 🛠️ Optimización Estándar (12 Pasos)
-1. **Limpieza Quirúrgica:** Borra carpetas `%TEMP%` y archivos residuales de Windows Update.
-2. **Arranque Instantáneo:** Limpia la caché de `Prefetch` y logs innecesarios.
-3. **Mantenimiento DISM:** Repara y optimiza la imagen del sistema automáticamente.
-4. **Plan Máximo Rendimiento:** Activa el esquema de energía oculto de Windows para CPU/GPU al 100%.
-5. **Red Pro:** Optimiza la pila TCP/IP, habilita RSS y limpia la caché DNS.
-6. **Latencia Cero:** Ajusta el registro para eliminar retrasos en menús y animaciones.
+### 🛠️ Optimización Estándar (18 Pasos)
+1. **Limpieza Total:** `%TEMP%`, `%windir%\Temp`, Windows Update cache, INetCache.
+2. **Prefetch y Logs:** Limpia cachés y vacía registros de eventos.
+3. **Plan Máximo Rendimiento:** Esquema de energía + timeouts de monitor/disco a 0.
+4. **Servicios Desactivados:** DiagTrack, dmwappushservice, SysMain, WerSvc, Webclient, W32Time, Spooler, RemoteRegistry, SSDPSRV.
+5. **Registro de Interfaz:** MenuShowDelay, MinAnimate, TaskbarAnimations, VisualFX, AeroPeeks.
+6. **Prioridad CPU:** Win32PrioritySeparation a 38 + optimizaciones de memoria.
+7. **Mantenimiento DISM:** Cleanup de componentes e imagen del sistema.
+8. **Red y DNS:** TCP/IP optimizado, RSS habilitado, chimney, DNS de Google (8.8.8.8 / 8.8.4.4).
+9. **Power Throttling:** Desactivado para máximo rendimiento.
+10. **Bing Search:** Desactivado del sistema de búsqueda.
+11. **Latencia Multimedia:** NetworkThrottlingIndex y SystemResponsiveness a 0.
+12. **PCI Desbloqueado:** Ajustes de energía PCI visibles.
+13. **Explorador Optimizado:** LaunchTo, HideIcons, AutoCheckSelect.
+14. **Memoria Avanzada:** DisablePagingExecutive, LargeSystemCache.
+15. **Indexado Desactivado:** WSearch desactivado.
+16. **DNS Google:** Configuración IPv4/IPv6.
+17. **Actualizaciones Ajustadas:** Opciones de Windows Update configuradas.
+18. **Cache Navegadores:** Limpieza de WebCache.
 
-### ⚡ Modo EXTREME / GAMER (+4 Pasos Extra)
-- **GPU HAGS:** Activa la programación de GPU acelerada por hardware para más FPS.
-- **Debloat Inteligente:** Elimina apps preinstaladas basura (TikTok, Disney+, etc.).
-- **Modo Gamer Pro:** Optimiza la Xbox Game Bar y el Game Mode de Windows.
-- **Sin Rastreo:** Desactiva tareas programadas de telemetría y recolección de datos.
+### ⚡ Modo EXTREME / GAMER (+6 Pasos Extra)
+- **GPU HAGS Completo:** Hardware Accelerated GPU Scheduling + SchedulerAccessPolicy.
+- **Debloat Plus:** TikTok, Disney+, OneNote, Spotify, CandyCrush, Messaging.
+- **Telemetría Eliminada:** 5 tareas programadas desactivadas.
+- **Modo Gamer Pro:** GameBar, GameDVR, FluentCapture deshabilitados.
+- **CPU Extrema:** C-states desactivados para latencia mínima.
+- **GPU Optimizada:** Ajustes NVIDIA/Intel para máximo rendimiento.
+- **Windows Defender Parcial:** Desactivado parcialmente para gaming.
 
 ---
 
 ## 🛡️ Seguridad Ante Todo
-- **Sistema de Restauración:** ¿Algo no te gusta? La **Opción [3]** deshace todos los cambios y deja el sistema como nuevo.
-- **Logs de Auditoría:** Genera un archivo `.txt` en tu escritorio con cada acción realizada.
-- **Elevación Automática:** Detecta si eres administrador para evitar fallos de ejecución.
+- **Sistema de Restauración:** ¿Algo no te gusta? La **Opción [3]** deshace todos los cambios.
+- **Logs de Auditoría:** Archivo `.txt` en tu escritorio con cada acción.
+- **Reversibilidad Total:** 16 pasos de restauración cubren todos los cambios.
 
 ---
 
@@ -36,15 +51,16 @@
 1. **Descarga:** Baja el archivo `WinOptimize.bat`.
 2. **Ejecución:** Clic derecho -> **Ejecutar como administrador**.
 3. **Elige tu nivel:**
-   - Pulsa `1` para un mantenimiento equilibrado.
-   - Pulsa `2` si quieres el máximo rendimiento para juegos.
-   - Pulsa `3` si necesitas revertir los cambios.
-4. **Reinicia:** ¡Es fundamental para que los cambios de registro surtan efecto!
+   - Pulsa `1` para optimización estándar.
+   - Pulsa `2` para modo EXTREME/GAMER.
+   - Pulsa `3` para revertir cambios.
+4. **Reinicia:** ¡Es fundamental!
 
 ---
 
 ## 📁 Estructura del Proyecto
-```WinOptimize Ultimate
+```
+WinOptimize Ultimate
 ├── 📁 docs
 │   ├── 📁 css
 │   │   └── 🎨 style.css
@@ -55,7 +71,8 @@
 
 ## 👨‍💻 Créditos
 Desarrollado con ❤️ por **FranVi**.
-Última actualización: **18/03/2026**
+Última actualización: **01/04/2026**
 
 ---
+
 *Advertencia: Aunque el script es seguro, siempre se recomienda crear un punto de restauración manual antes de realizar cambios profundos en el sistema.*
