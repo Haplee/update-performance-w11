@@ -1,13 +1,13 @@
 @echo off
 :: ############################################################################
-:: # OPTIMIZADOR WINDOWS 11 - RENDIMIENTO v6.0 ULTIMATE PLUS               #
+:: # OPTIMIZADOR WINDOWS 11 - RENDIMIENTO v6.1 ULTIMATE PLUS               #
 :: ############################################################################
 :: # Autor: FranVi                                                            #
 :: ############################################################################
 
 setlocal EnableDelayedExpansion
 chcp 65001 >nul
-title OPTIMIZADOR ULTIMATE PLUS - WINDOWS 11 [v6.0]
+title OPTIMIZADOR ULTIMATE PLUS - WINDOWS 11 [v6.1]
 mode con: cols=100 lines=40
 
 for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do set "ESC=%%b"
@@ -21,8 +21,8 @@ set "WHT=!ESC![37m"
 
 net session >nul 2>&1
 if %errorLevel% neq 0 (
-    echo %RED%[!] ERROR: Se requieren privilegios de Administrador.%CLR%
-    pause
+    echo %YLW%[i] Solicitando privilegios de Administrador...%CLR%
+    powershell -Command "Start-Process '%~dpnx0' -Verb RunAs"
     exit /b
 )
 
@@ -39,7 +39,7 @@ echo. >> "!LOG_FILE!"
 :menu
 cls
 echo %CYN%================================================================================%CLR%
-echo %WHT%          OPTIMIZADOR AVANZADO WINDOWS 11 - ULTIMATE v6.0 %CLR%
+echo %WHT%          OPTIMIZADOR AVANZADO WINDOWS 11 - ULTIMATE v6.1 %CLR%
 echo %CYN%================================================================================%CLR%
 echo.
 echo  Selecciona una accion:
@@ -53,9 +53,9 @@ echo  Log actual: !LOG_FILE!
 echo %CYN%--------------------------------------------------------------------------------%CLR%
 set /p opt="%YLW% Elige una opcion [1-4]: %CLR%"
 
-if "%opt%"=="1" (set "isExtreme=false" & set "isRestore=false" & set "total=18" & goto start_process)
-if "%opt%"=="2" (set "isExtreme=true" & set "isRestore=false" & set "total=24" & goto start_process)
-if "%opt%"=="3" (set "isExtreme=false" & set "isRestore=true" & set "total=16" & goto start_process)
+if "%opt%"=="1" (set "isExtreme=false" & set "isRestore=false" & set "total=21" & goto start_process)
+if "%opt%"=="2" (set "isExtreme=true" & set "isRestore=false" & set "total=28" & goto start_process)
+if "%opt%"=="3" (set "isExtreme=false" & set "isRestore=true" & set "total=14" & goto start_process)
 if "%opt%"=="4" (exit /b)
 goto menu
 
@@ -69,19 +69,43 @@ if "!isRestore!"=="true" goto restore_logic
 :: --- OPTIMIZACION ESTANDAR ---
 
 set /a current+=1
-call :step !current! !total! "LIMPIEZA DE TEMPORALES Y CACHE"
+call :step !current! !total! "CREANDO PUNTO DE RESTAURACION"
+powershell.exe -ExecutionPolicy Bypass -Command "Checkpoint-Computer -Description 'Pre-WinOptimize' -RestorePointType 'MODIFY_SETTINGS'" >nul 2>&1
+echo [+] Punto de restauracion creado. >> "!LOG_FILE!"
+
+set /a current+=1
+call :step !current! !total! "LIMPIEZA DE TEMPORALES Y DISCO (CLEANMGR)"
 del /q /s "%TEMP%\*" >nul 2>&1
 del /q /s "%windir%\Temp\*" >nul 2>&1
 rd /s /q "%windir%\SoftwareDistribution\Download" >nul 2>&1
 md "%windir%\SoftwareDistribution\Download" >nul 2>&1
 del /q /s "%localappdata%\Microsoft\Windows\INetCache\*" >nul 2>&1
-echo [+] Temporales y Cache limpiados. >> "!LOG_FILE!"
+:: Configuracion silenciosa para cleanmgr
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Active Setup Temp Folders" /v StateFlags0001 /t REG_DWORD /d 2 /f >nul 2>&1
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Downloaded Program Files" /v StateFlags0001 /t REG_DWORD /d 2 /f >nul 2>&1
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Internet Cache Files" /v StateFlags0001 /t REG_DWORD /d 2 /f >nul 2>&1
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Old ChkDsk Files" /v StateFlags0001 /t REG_DWORD /d 2 /f >nul 2>&1
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Previous Installations" /v StateFlags0001 /t REG_DWORD /d 2 /f >nul 2>&1
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Recycle Bin" /v StateFlags0001 /t REG_DWORD /d 2 /f >nul 2>&1
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Setup Log Files" /v StateFlags0001 /t REG_DWORD /d 2 /f >nul 2>&1
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\System error memory dump files" /v StateFlags0001 /t REG_DWORD /d 2 /f >nul 2>&1
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Temporary Files" /v StateFlags0001 /t REG_DWORD /d 2 /f >nul 2>&1
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Temporary Setup Files" /v StateFlags0001 /t REG_DWORD /d 2 /f >nul 2>&1
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Update Cleanup" /v StateFlags0001 /t REG_DWORD /d 2 /f >nul 2>&1
+cleanmgr /sagerun:1 >nul 2>&1
+echo [+] Temporales y disco limpiados. >> "!LOG_FILE!"
 
 set /a current+=1
 call :step !current! !total! "ELIMINACION DE PREFETCH Y LOGS"
 del /q /s "C:\Windows\Prefetch\*" >nul 2>&1
 for /f %%i in ('wevtutil el 2^>nul') do wevtutil cl "%%i" >nul 2>&1
 echo [+] Prefetch y registros de eventos vaciados. >> "!LOG_FILE!"
+
+set /a current+=1
+call :step !current! !total! "VACIADO DE CACHE DE ICONOS Y MINIATURAS"
+del /f /s /q "%localappdata%\Microsoft\Windows\Explorer\iconcache*.db" >nul 2>&1
+del /f /s /q "%localappdata%\Microsoft\Windows\Explorer\thumbcache*.db" >nul 2>&1
+echo [+] Cache de iconos borrado. >> "!LOG_FILE!"
 
 set /a current+=1
 call :step !current! !total! "ACTIVANDO PLAN DE MAXIMO RENDIMIENTO"
@@ -99,6 +123,13 @@ for %%s in (DiagTrack dmwappushservice SysMain WerSvc Webclient W32Time Spooler 
     sc stop "%%s" >nul 2>&1
     echo [!] Servicio %%s: Desactivado. >> "!LOG_FILE!"
 )
+
+set /a current+=1
+call :step !current! !total! "DESACTIVANDO CORTANA Y COPILOT"
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search" /v "AllowCortana" /t REG_DWORD /d 0 /f >nul 2>&1
+reg add "HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot" /v "TurnOffWindowsCopilot" /t REG_DWORD /d 1 /f >nul 2>&1
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot" /v "TurnOffWindowsCopilot" /t REG_DWORD /d 1 /f >nul 2>&1
+echo [+] Cortana y Copilot desactivados. >> "!LOG_FILE!"
 
 set /a current+=1
 call :step !current! !total! "OPTIMIZANDO REGISTRO DE INTERFAZ"
@@ -211,7 +242,7 @@ echo [+] Extreme: GPU HAGS y Hardware Scheduling activados. >> "!LOG_FILE!"
 
 set /a current+=1
 call :step !current! !total! "DEBLOAT: APPS BASURA"
-powershell -Command "Get-AppxPackage *TikTok*,*DisneyPlus*,*Microsoft.Messaging*,*Microsoft.Office.OneNote*,*Spotify*,*CandyCrush* | Remove-AppxPackage -ErrorAction SilentlyContinue" >nul 2>&1
+powershell -Command "$apps = @('*TikTok*', '*DisneyPlus*', '*Microsoft.Messaging*', '*Microsoft.Office.OneNote*', '*Spotify*', '*CandyCrush*', '*XboxApp*', '*FeedbackHub*', '*GetHelp*', '*Maps*', '*ZuneVideo*', '*Cortana*'); foreach ($app in $apps) { Get-AppxPackage $app | Remove-AppxPackage -ErrorAction SilentlyContinue }" >nul 2>&1
 echo [+] Extreme: Debloat de apps completado. >> "!LOG_FILE!"
 
 set /a current+=1
@@ -245,8 +276,11 @@ echo [+] Extreme: GPU optimizada al maximo. >> "!LOG_FILE!"
 
 set /a current+=1
 call :step !current! !total! "DESACTIVANDO WINDOWS DEFENDER (OPCIONAL)"
+echo %RED%  [!] IMPORTANTE: Windows Defender solo se desactivara si tienes%CLR%
+echo %RED%      la "Proteccion contra alteraciones" desactivada en Seguridad de Windows.%CLR%
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableAntiSpyware" /t REG_DWORD /d 1 /f >nul 2>&1
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /v "DisableBehaviorMonitoring" /t REG_DWORD /d 1 /f >nul 2>&1
+timeout /t 3 >nul
 echo [+] Extreme: Windows Defender parcialmente desactivado. >> "!LOG_FILE!"
 
 goto end_process
@@ -282,9 +316,12 @@ powercfg -h on >nul 2>&1
 echo [R] Plan Equilibrado activado. >> "!LOG_FILE!"
 
 set /a current+=1
-call :step !current! !total! "RESTAURANDO BING SEARCH"
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v "BingSearchEnabled" /t REG_DWORD /d 1 /f >nul 2>&1
-echo [R] Bing Search restaurado. >> "!LOG_FILE!"
+call :step !current! !total! "RESTAURANDO BING, CORTANA Y COPILOT"
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v "BingSearchEnabled" /f >nul 2>&1
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search" /v "AllowCortana" /f >nul 2>&1
+reg delete "HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot" /v "TurnOffWindowsCopilot" /f >nul 2>&1
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot" /v "TurnOffWindowsCopilot" /f >nul 2>&1
+echo [R] Bing, Cortana y Copilot restaurados. >> "!LOG_FILE!"
 
 set /a current+=1
 call :step !current! !total! "RESTAURANDO RED"
