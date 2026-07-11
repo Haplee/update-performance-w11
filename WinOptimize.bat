@@ -70,6 +70,8 @@ if "!isRestore!"=="true" goto restore_logic
 
 set /a current+=1
 call :step !current! !total! "CREANDO PUNTO DE RESTAURACION"
+echo  %YLW%Creando punto de restauracion, puede tardar 1-2 minutos...%CLR%
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" /v SystemRestorePointCreationFrequency /t REG_DWORD /d 0 /f >nul 2>&1
 powershell.exe -ExecutionPolicy Bypass -Command "Checkpoint-Computer -Description 'Pre-WinOptimize' -RestorePointType 'MODIFY_SETTINGS'" >nul 2>&1
 echo [+] Punto de restauracion creado. >> "!LOG_FILE!"
 
@@ -92,8 +94,9 @@ reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Sy
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Temporary Files" /v StateFlags0001 /t REG_DWORD /d 2 /f >nul 2>&1
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Temporary Setup Files" /v StateFlags0001 /t REG_DWORD /d 2 /f >nul 2>&1
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Update Cleanup" /v StateFlags0001 /t REG_DWORD /d 2 /f >nul 2>&1
-cleanmgr /sagerun:1 >nul 2>&1
-echo [+] Temporales y disco limpiados. >> "!LOG_FILE!"
+:: cleanmgr puede tardar 30+ min (Update Cleanup): se lanza en segundo plano para no bloquear el script
+start "" /min cleanmgr /sagerun:1
+echo [+] Temporales limpiados. Cleanmgr sigue en segundo plano. >> "!LOG_FILE!"
 
 set /a current+=1
 call :step !current! !total! "ELIMINACION DE PREFETCH Y LOGS"
@@ -118,10 +121,11 @@ echo [+] Plan Maximo Rendimiento activado. >> "!LOG_FILE!"
 
 set /a current+=1
 call :step !current! !total! "DESACTIVANDO SERVICIOS INNECESARIOS"
-for %%s in (DiagTrack dmwappushservice SysMain WerSvc Webclient W32Time Spooler RemoteRegistry SSDPSRV) do (
+:: Spooler (impresion) y W32Time (sincronizacion de hora) NO se tocan: deshabilitarlos rompe la impresion y puede causar fallos HTTPS
+for %%s in (DiagTrack dmwappushservice SysMain WerSvc Webclient RemoteRegistry SSDPSRV) do (
     sc config "%%s" start= disabled >nul 2>&1
     sc stop "%%s" >nul 2>&1
-    echo [!] Servicio %%s: Desactivado. >> "!LOG_FILE!"
+    echo [-] Servicio %%s: Desactivado. >> "!LOG_FILE!"
 )
 
 set /a current+=1
@@ -148,7 +152,8 @@ echo [+] Prioridad de CPU ajustada. >> "!LOG_FILE!"
 
 set /a current+=1
 call :step !current! !total! "MANTENIMIENTO DE ALMACENAMIENTO (DISM)"
-dism /online /cleanup-image /startcomponentcleanup /quiet /norestart >nul 2>&1
+echo  %YLW%Esta operacion puede tardar 10-30 minutos. Se muestra el progreso de DISM:%CLR%
+dism /online /cleanup-image /startcomponentcleanup /norestart
 dism /online /cleanup-image /checkhealth >nul 2>&1
 echo [+] Limpieza de componentes DISM completada. >> "!LOG_FILE!"
 
@@ -207,22 +212,14 @@ echo [+] Indexado de Windows desactivado. >> "!LOG_FILE!"
 
 set /a current+=1
 call :step !current! !total! "OPTIMIZANDO DNS Y MTU"
-for /f "tokens=2*" %%a in ('netsh interface show interface ^| findstr /i "connected"') do set "NETINT=%%b"
-if defined NETINT (
-    netsh interface ipv4 set dns name="!NETINT!" static 8.8.8.8 >nul 2>&1
-    netsh interface ipv4 add dns name="!NETINT!" 8.8.4.4 index=2 >nul 2>&1
-    netsh interface ipv6 set dns name="!NETINT!" static 2001:4860:4860::8888 >nul 2>&1
-) else (
-    netsh interface ipv4 set dns name="Ethernet" static 8.8.8.8 >nul 2>&1
-    netsh interface ipv4 add dns name="Ethernet" 8.8.4.4 index=2 >nul 2>&1
-    netsh interface ipv6 set dns name="Ethernet" static 2001:4860:4860::8888 >nul 2>&1
-)
+:: Deteccion de adaptador independiente del idioma de Windows
+powershell -Command "Get-NetAdapter -Physical | Where-Object Status -eq 'Up' | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ServerAddresses '8.8.8.8','8.8.4.4' }" >nul 2>&1
 echo [+] DNS de Google configurado. >> "!LOG_FILE!"
 
 set /a current+=1
 call :step !current! !total! "DESACTIVANDO ACTUALIZACIONES AUTOMATICAS"
+:: El servicio wuauserv NO se deshabilita: sin el no llegan parches de seguridad
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v "AUOptions" /t REG_DWORD /d 1 /f >nul 2>&1
-sc config "wuauserv" start= disabled >nul 2>&1
 echo [+] Actualizaciones automaticas ajustadas. >> "!LOG_FILE!"
 
 set /a current+=1
@@ -276,7 +273,7 @@ echo [+] Extreme: GPU optimizada al maximo. >> "!LOG_FILE!"
 
 set /a current+=1
 call :step !current! !total! "DESACTIVANDO WINDOWS DEFENDER (OPCIONAL)"
-echo %RED%  [!] IMPORTANTE: Windows Defender solo se desactivara si tienes%CLR%
+echo %RED%  [AVISO] IMPORTANTE: Windows Defender solo se desactivara si tienes%CLR%
 echo %RED%      la "Proteccion contra alteraciones" desactivada en Seguridad de Windows.%CLR%
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableAntiSpyware" /t REG_DWORD /d 1 /f >nul 2>&1
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /v "DisableBehaviorMonitoring" /t REG_DWORD /d 1 /f >nul 2>&1
@@ -379,10 +376,10 @@ goto end_process
 cls
 echo %GRN%================================================================================%CLR%
 if "!isRestore!"=="true" (
-    echo %WHT%                 RESTAURACION COMPLETADA! [OK]%CLR%
+    echo %WHT%                 RESTAURACION COMPLETADA [OK]%CLR%
     echo OPERACION FINALIZADA: Sistema restaurado con exito. >> "!LOG_FILE!"
 ) else (
-    echo %WHT%                 OPTIMIZACION COMPLETADA! [OK]%CLR%
+    echo %WHT%                 OPTIMIZACION COMPLETADA [OK]%CLR%
     echo OPERACION FINALIZADA: Sistema optimizado con exito. >> "!LOG_FILE!"
 )
 echo %GRN%================================================================================%CLR%
@@ -390,7 +387,7 @@ echo.
 echo  %WHT%Archivo log generado en:%CLR%
 echo  %CYN%!LOG_FILE!%CLR%
 echo.
-echo %RED%  REINICIA TU ORDENADOR PARA APLICAR LOS CAMBIOS!%CLR%
+echo %RED%  REINICIA TU ORDENADOR PARA APLICAR LOS CAMBIOS%CLR%
 echo.
 pause
 exit /b
@@ -406,5 +403,7 @@ cls
 echo.
 echo  %WHT%ESTADO: [%CYN%!bar!%WHT%] !pct!%%%CLR%
 echo  %WHT%ACCION: %YLW%%~3%CLR%
+echo.
+echo  %WHT%Algunas operaciones tardan varios minutos. No cierres la ventana.%CLR%
 echo.
 exit /b
